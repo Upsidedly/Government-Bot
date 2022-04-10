@@ -1,12 +1,12 @@
 import { Client, Collection, Message, TextChannel } from "discord.js";
 import { resolve } from "jsonsided";
 
-const commands = new Collection<string, (msg: Message, args: string[], alias: string) => unknown>()
+const commands = new Collection<string, [(msg: Message, args: string[], alias: string) => unknown, string[]]>()
 
 export function command(name: string, aliases: string[], fn: (msg: Message, args: string[], alias: string) => unknown) {
-    commands.set(name.toLowerCase().trim(), fn)
+    commands.set(name.toLowerCase().trim(), [fn, aliases])
     for (const alias of aliases) {
-        commands.set(alias.toLowerCase().trim(), fn)
+        commands.set(alias.toLowerCase().trim(), [fn, aliases.concat(name).filter(a => a !== alias)])
     }
 }
 
@@ -25,6 +25,6 @@ export async function ready(client: Client) {
 
         if (!commands.has(n)) return
 
-        commands.get(n)!(msg, args, n)
+        commands.get(n)![0](msg, args, n)
     })
 }

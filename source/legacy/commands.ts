@@ -1,6 +1,6 @@
 import { MessageEmbed } from "discord.js";
 import ms from "ms";
-import { command } from "./command.js";
+import { command } from "../command.js";
 import { random, client, massreact, wait } from "./stuff.js";
 
 command('hi', ['hello'], (msg) => {

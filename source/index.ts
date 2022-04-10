@@ -5,7 +5,7 @@ import { MongoClient } from 'mongodb';
 import { readdir } from 'fs/promises';
 import { client, } from './legacy/stuff.js';
 
-for (const file of (await readdir('./dist/events/'))) {
+for (const file of (await readdir('./dist/events/')).filter(f => f.endsWith('.js'))) {
     await import(`./events/${file}`);
 }
 
